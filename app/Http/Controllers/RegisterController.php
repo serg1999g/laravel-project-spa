@@ -19,6 +19,10 @@ class RegisterController extends BaseController
      */
     public function register(RegisterRequests $request)
     {
+//        if ($request->messages()) {
+//            return $this->sendError('Validation Error.', $request->messages());
+//        }
+
         $user = User::create([
             'name' => $request->input('name'),
             'email' => $request->input('email'),
