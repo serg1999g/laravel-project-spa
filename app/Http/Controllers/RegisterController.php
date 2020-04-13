@@ -7,7 +7,6 @@ use App\Http\Requests\RegisterRequests;
 use App\User;
 use Illuminate\Http\Request;
 
-
 class RegisterController extends BaseController
 {
     /**
