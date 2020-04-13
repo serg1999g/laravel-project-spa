@@ -10,7 +10,6 @@ use Illuminate\Http\Request;
 
 class RegisterController extends BaseController
 {
-
     /**
      * Register api
      *
@@ -32,6 +31,6 @@ class RegisterController extends BaseController
         $success['token'] = $user->createToken($user->email . '-' . now())->accessToken;
         $success['name'] = $user->name;
 
-        return $this->sendResponse($success, 'User register successfully.');
+        return $this->sendResponse($success, __('messages.register'));
     }
 }

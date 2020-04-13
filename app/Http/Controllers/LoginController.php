@@ -9,7 +9,9 @@ use Illuminate\Support\Facades\Auth;
 class LoginController extends BaseController
 {
     /**
-     * @param Request $request
+     * Login api
+     *
+     * @param $request
      * @return \Illuminate\Http\Response
      */
     public function login(LoginRequests $request)
@@ -20,7 +22,7 @@ class LoginController extends BaseController
             $user = Auth::user();
             $success['token'] = $user->createToken($user->email . '-' . now())->accessToken;
 
-            return $this->sendResponse($success, 'User logged in');
+            return $this->sendResponse($success, __('messages.login'));
         }
     }
 }
