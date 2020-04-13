@@ -29,7 +29,7 @@ class RegisterController extends BaseController
             'password' => bcrypt($request->input('password')),
         ]);
 
-        $success['token'] = $user->createToken('Token Name')->accessToken;
+        $success['token'] = $user->createToken($user->email . '-' . now())->accessToken;
         $success['name'] = $user->name;
 
         return $this->sendResponse($success, 'User register successfully.');
