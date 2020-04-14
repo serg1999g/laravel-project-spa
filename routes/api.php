@@ -25,10 +25,10 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 
 Route::middleware('auth:api')->group(function () {
+    Route::post('logout', [LogoutController::class, 'logout']);
     Route::get('user/{id}/detail', [UserController::class, 'show']);
 });
 
 
 Route::post('register', [RegisterController::class, 'register']);
 Route::post('login', [LoginController::class, 'login']);
-Route::post('logout', [LogoutController::class, 'logout']);
