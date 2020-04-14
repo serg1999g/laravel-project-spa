@@ -1,8 +1,9 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace Modules\Auth\Http\Controllers;
 
-use App\Http\Requests\LoginRequests;
+use App\Http\Controllers\Api\BaseController;
+use Modules\Auth\Http\Requests\LoginRequests;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -12,7 +13,7 @@ class LoginController extends BaseController
      * Login api
      *
      * @param $request
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function login(LoginRequests $request)
     {

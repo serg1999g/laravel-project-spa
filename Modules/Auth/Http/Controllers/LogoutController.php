@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace Modules\Auth\Http\Controllers;
 
+use App\Http\Controllers\Api\BaseController;
 use Illuminate\Http\Request;
 
 class LogoutController extends BaseController
@@ -10,7 +11,7 @@ class LogoutController extends BaseController
      * Logout api
      *
      * @param $request
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function logout(Request $request)
     {

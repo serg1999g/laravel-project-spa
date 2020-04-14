@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace Modules\Auth\Http\Controllers;
 
-use App\Http\Controllers\BaseController as BaseController;
-use App\Http\Requests\RegisterRequests;
-use App\User;
+use App\Http\Controllers\Api\BaseController;
+use Modules\Auth\Http\Requests\RegisterRequests;
+use Modules\Auth\Models\User;
 use Illuminate\Http\Request;
 
 class RegisterController extends BaseController
@@ -13,7 +13,7 @@ class RegisterController extends BaseController
      * Register api
      *
      * @param $request
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function register(RegisterRequests $request)
     {
