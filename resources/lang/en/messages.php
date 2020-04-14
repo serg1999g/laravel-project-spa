@@ -3,5 +3,7 @@
 return [
     'register'  => 'User register successfully.',
     'login'     => 'User logged in.',
-    'logout'    => 'Successfully logged out.'
+    'logout'    => 'Successfully logged out.',
+    'userData'  => 'UserData',
+    'errorUser' => 'User not found!',
 ];

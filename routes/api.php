@@ -7,6 +7,8 @@ use Modules\Auth\Http\Controllers\RegisterController;
 use Modules\Auth\Http\Controllers\LoginController;
 use Modules\Auth\Http\Controllers\LogoutController;
 
+use Modules\User\Http\Controllers\UserController;
+
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -20,6 +22,10 @@ use Modules\Auth\Http\Controllers\LogoutController;
 
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
+});
+
+Route::middleware('auth:api')->group(function () {
+    Route::get('user/{id}/detail', [UserController::class, 'show']);
 });
 
 
