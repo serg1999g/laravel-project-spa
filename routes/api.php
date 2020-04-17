@@ -2,6 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Routing\Router;
 
 use Modules\Auth\Http\Controllers\RegisterController;
 use Modules\Auth\Http\Controllers\LoginController;
@@ -9,6 +10,7 @@ use Modules\Auth\Http\Controllers\LogoutController;
 
 use Modules\User\Http\Controllers\UserController;
 
+/** @var  \Illuminate\Routing\Router $router */
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -20,15 +22,15 @@ use Modules\User\Http\Controllers\UserController;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
+$router->middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::middleware('auth:api')->group(function () {
-    Route::post('logout', [LogoutController::class, 'logout']);
-    Route::get('user/{id}/detail', [UserController::class, 'show']);
+$router->group(['middleware' => ['auth:api',]], function (Router $router) {
+    $router->post('logout', [LogoutController::class, 'logout']);
+    $router->get('user/{id}/detail', [UserController::class, 'show']);
 });
 
 
-Route::post('register', [RegisterController::class, 'register']);
-Route::post('login', [LoginController::class, 'login']);
+$router->post('register', [RegisterController::class, 'register']);
+$router->post('login', [LoginController::class, 'login']);
