@@ -31,6 +31,7 @@ $router->group(['middleware' => ['auth:api']], function (Router $router) {
     $router->post('logout', [LogoutController::class, 'logout']);
     $router->get('user/{id}/detail', [UserController::class, 'show']);
     $router->post('mission/create', [MissionController::class, 'create']);
+    $router->get('mission', [MissionController::class, 'index']);
 });
 
 

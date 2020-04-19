@@ -30,15 +30,25 @@ class MissionController extends BaseController
         $this->missionRepository = $missionRepository;
     }
 
+    /**
+     *  All missions
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function index()
     {
-        // TODO
-        $mission['data'] = $this->missionRepository->all();
+        if (Auth::check()) {
+            $success['data'] = $this->missionRepository->all();
 
-        return $this->sendResponse($mission, 'all');
+            return $this->sendResponse($success, 'all');
+        } else {
+            return $this->sendError('lox');
+        }
     }
 
     /**
+     *  Mission creation
+     *
      * @param MissionRequests $request
      * @return \Illuminate\Http\JsonResponse
      */
@@ -46,19 +56,24 @@ class MissionController extends BaseController
     {
         $user = Auth::user();
         $data = $request->only('name', 'description');
-
-        $mission = $user->missions()->create($data);
-        $success['mission'] = $mission;
+        $success['data'] = $user->missions()->create($data);
 
         return $this->sendResponse($success, __('messages.successMission'));
     }
 
+    /**
+     * @param $id
+     */
     public function update($id)
     {
         // TODO
         $mission = $this->missionRepository->getById($id);
     }
 
+    /**
+     * @param $id
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function delete($id)
     {
         // TODO
