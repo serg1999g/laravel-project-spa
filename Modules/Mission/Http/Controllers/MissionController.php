@@ -38,6 +38,10 @@ class MissionController extends BaseController
         return $this->sendResponse($mission, 'all');
     }
 
+    /**
+     * @param MissionRequests $request
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function create(MissionRequests $request)
     {
         $user = Auth::user();
