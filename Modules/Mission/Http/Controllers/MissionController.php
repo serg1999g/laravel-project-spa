@@ -40,9 +40,9 @@ class MissionController extends BaseController
         if (Auth::check()) {
             $success['data'] = $this->missionRepository->all();
 
-            return $this->sendResponse($success, 'all');
+            return $this->sendResponse($success, __('messages.successfulOperation'));
         } else {
-            return $this->sendError('lox');
+            return $this->sendError(__('messages.unsuccessfulOperation'));
         }
     }
 
