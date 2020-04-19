@@ -6,6 +6,7 @@ use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Passport\HasApiTokens;
+use Modules\Mission\Models\Mission;
 
 class User extends Authenticatable
 {
@@ -50,6 +51,10 @@ class User extends Authenticatable
         return $this->belongsToMany(Role::class, 'users_roles');
     }
 
+    public function missions()
+    {
+        return $this->hasMany(Mission::class);
+    }
 
     /**
      * assign a role during user registration
