@@ -6,4 +6,6 @@ return [
     'logout'    => 'Successfully logged out.',
     'userData'  => 'UserData',
     'errorUser' => 'User not found!',
+
+    'successMission' => 'Mission register successfully.',
 ];

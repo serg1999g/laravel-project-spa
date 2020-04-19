@@ -46,7 +46,7 @@ class MissionController extends BaseController
         $mission = $user->missions()->create($credentials);
         $success['mission'] = $mission;
 
-        return $this->sendResponse($success, 'create');
+        return $this->sendResponse($success, __('messages.successMission'));
     }
 
     public function update($id)
