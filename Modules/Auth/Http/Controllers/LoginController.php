@@ -23,10 +23,11 @@ class LoginController extends BaseController
         if (Auth::attempt($credentials)) {
             $user = Auth::user();
             $success['role'] = $user->roles[0]['name'];
-            $success['id'] = $user->id;
             $success['token'] = $user->createToken($user->email . '-' . now())->accessToken;
 
             return $this->sendResponse($success, __('messages.login'));
+        } else {
+            return $this->sendError(__('messages.errorUser'));
         }
     }
 }

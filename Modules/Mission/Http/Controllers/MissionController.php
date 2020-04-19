@@ -45,9 +45,9 @@ class MissionController extends BaseController
     public function create(MissionRequests $request)
     {
         $user = Auth::user();
-        $credentials = $request->only('name', 'description');
+        $data = $request->only('name', 'description');
 
-        $mission = $user->missions()->create($credentials);
+        $mission = $user->missions()->create($data);
         $success['mission'] = $mission;
 
         return $this->sendResponse($success, __('messages.successMission'));
