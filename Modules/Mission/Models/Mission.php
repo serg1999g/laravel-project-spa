@@ -9,7 +9,9 @@ class Mission extends Model
 {
     protected $table = 'missions';
 
-    protected $fillable = ['user_id','name', 'description'];
+    protected $fillable = [
+        'name', 'description'
+    ];
 
     public function user()
     {
