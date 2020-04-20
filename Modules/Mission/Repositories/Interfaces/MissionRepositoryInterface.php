@@ -8,7 +8,7 @@ interface MissionRepositoryInterface
 {
     public function all();
 
-    public function getById($id): Mission;
+    public function getById(int $id): Mission;
 
-    public function delete($id): Mission;
+    public function delete(int $id): bool;
 }

@@ -13,12 +13,12 @@ class MissionRepository implements MissionRepositoryInterface
         return Mission::all();
     }
 
-    public function getById($id): Mission
+    public function getById(int $id): Mission
     {
         return Mission::findOrFail($id);
     }
 
-    public function delete($id): Mission
+    public function delete(int $id): bool
     {
         return Mission::findOrFail($id)->delete();
     }

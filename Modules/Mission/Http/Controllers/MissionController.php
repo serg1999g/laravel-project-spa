@@ -62,23 +62,67 @@ class MissionController extends BaseController
     }
 
     /**
-     * @param $id
+     * Show mission
+     *
+     * @param int $id
+     * @return \Illuminate\Http\JsonResponse
      */
-    public function update($id)
+    public function show(int $id)
     {
-        // TODO
         $mission = $this->missionRepository->getById($id);
+
+        return $this->sendResponse($mission, __('messages.successMission'));
     }
 
     /**
-     * @param $id
+     * Edit mission if you are its creator
+     *
+     * @param int $id
      * @return \Illuminate\Http\JsonResponse
+     * @throws \Illuminate\Auth\Access\AuthorizationException
      */
-    public function delete($id)
+    public function edit(int $id)
     {
-        // TODO
-        $mission = $this->missionRepository->delete($id);
+        $mission = $this->missionRepository->getById($id);
+        $this->authorize('edit', $mission);
 
-        return $this->sendResponse($mission, 'delete');
+        return $this->sendResponse($mission, __('messages.successMission'));
+    }
+
+    /**
+     * Update mission if you are its creator
+     *
+     * @param MissionRequests $request
+     * @param int $id
+     * @return \Illuminate\Http\JsonResponse
+     * @throws \Illuminate\Auth\Access\AuthorizationException
+     */
+    public function update(MissionRequests $request, int $id)
+    {
+        $mission = $this->missionRepository->getById($id);
+        $this->authorize('update', $mission);
+
+        $mission->fill($request->all());
+        $mission->save();
+        $data['mission'] = $mission;
+
+        return $this->sendResponse($data, __('messages.successMission'));
+    }
+
+    /**
+     * Delete mission if you are its creator
+     *
+     * @param int $id
+     * @return \Illuminate\Http\JsonResponse
+     * @throws \Illuminate\Auth\Access\AuthorizationException
+     */
+    public function destroy(int $id)
+    {
+        $mission = $this->missionRepository->getById($id);
+        $this->authorize('delete', $mission);
+
+        $this->missionRepository->delete($id);
+
+        return $this->sendResponse(null, __('messages.successMission'));
     }
 }
