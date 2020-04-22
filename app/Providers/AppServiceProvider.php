@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
 use Modules\Mission\Providers\MissionServiceProvider;
+use Modules\User\Providers\UserServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -15,6 +16,7 @@ class AppServiceProvider extends ServiceProvider
     public function register()
     {
         $this->app->register(MissionServiceProvider::class);
+        $this->app->register(UserServiceProvider::class);
     }
 
     /**

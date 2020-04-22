@@ -36,6 +36,8 @@ $router->group(['middleware' => ['auth:api']], function (Router $router) {
     $router->delete('mission/{id}/destroy', [MissionController::class, 'destroy']);
     $router->get('mission/{id}/edit', [MissionController::class, 'edit']);
     $router->get('mission/{id}/show', [MissionController::class, 'show']);
+
+//    $router->resource('missions', MissionController::class)->except('store');
 });
 
 

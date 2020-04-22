@@ -4,12 +4,20 @@ namespace Modules\Auth\Http\Controllers;
 
 use App\Http\Controllers\Api\BaseController;
 use Modules\Auth\Http\Requests\RegisterRequests;
-use Modules\Auth\Models\Role;
-use Modules\Auth\Models\User;
+use Modules\User\Models\Role;
+use Modules\User\Models\User;
 use Illuminate\Http\Request;
+use Modules\User\Services\Interfaces\RoleServiceInterface;
 
 class RegisterController extends BaseController
 {
+    private $roleService;
+
+    public function __construct(RoleServiceInterface $roleService)
+    {
+        $this->roleService = $roleService;
+    }
+
     /**
      * Register api
      *
@@ -26,7 +34,7 @@ class RegisterController extends BaseController
             'password' => bcrypt($request->input('password')),
         ]);
 
-        $user->assingRole($role);
+        $this->roleService->assignRole($role, $user);
 
         $success['token'] = $user->createToken($user->email . '-' . now())->accessToken;
         $success['name'] = $user->name;

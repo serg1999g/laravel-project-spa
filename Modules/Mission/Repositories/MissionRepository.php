@@ -17,9 +17,4 @@ class MissionRepository implements MissionRepositoryInterface
     {
         return Mission::findOrFail($id);
     }
-
-    public function delete(int $id): bool
-    {
-        return Mission::findOrFail($id)->delete();
-    }
 }

@@ -5,7 +5,6 @@ namespace Modules\Auth\Http\Controllers;
 use App\Http\Controllers\Api\BaseController;
 use Modules\Auth\Http\Requests\LoginRequests;
 use Illuminate\Http\Request;
-use Modules\Auth\Models\User;
 use Illuminate\Support\Facades\Auth;
 
 class LoginController extends BaseController
@@ -21,7 +20,7 @@ class LoginController extends BaseController
         $credentials = $request->only('email', 'password');
 
         if (Auth::attempt($credentials)) {
-            $user = Auth::user();
+            $user = $request->user();
             $success['role'] = $user->roles[0]['name'];
             $success['token'] = $user->createToken($user->email . '-' . now())->accessToken;
 

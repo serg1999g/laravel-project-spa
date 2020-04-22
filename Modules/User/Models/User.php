@@ -1,6 +1,6 @@
 <?php
 
-namespace Modules\Auth\Models;
+namespace Modules\User\Models;
 
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -40,6 +40,7 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
     /**
      * @var mixed
      */
@@ -55,18 +56,6 @@ class User extends Authenticatable
     {
         return $this->hasMany(Mission::class);
     }
-
-    /**
-     * assign a role during user registration
-     *
-     * @param Role $role
-     * @return mixed
-     */
-    public function assingRole(Role $role)
-    {
-        return $this->roles()->save($role);
-    }
-
 
     /**
      * Check if the current logged in user has a role
