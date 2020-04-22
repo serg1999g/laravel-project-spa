@@ -28,27 +28,18 @@ class MissionController extends BaseController
      */
     private $missionService;
 
-
-    /**
-     * @var UserRepositoryInterface
-     */
-    private $userRepository;
-
     /**
      * MissionController constructor.
      * @param MissionRepositoryInterface $missionRepository
      * @param MissionServiceInterface $missionService
-     * @param UserRepositoryInterface $userRepository
      */
     public function __construct(
         MissionRepositoryInterface $missionRepository,
-        MissionServiceInterface $missionService,
-        UserRepositoryInterface $userRepository
+        MissionServiceInterface $missionService
     )
     {
         $this->missionRepository = $missionRepository;
         $this->missionService = $missionService;
-        $this->userRepository = $userRepository;
     }
 
     /**
