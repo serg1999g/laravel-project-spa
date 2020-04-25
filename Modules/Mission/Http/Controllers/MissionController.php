@@ -10,7 +10,6 @@ use Modules\Mission\Http\Requests\MissionRequests;
 use Modules\Mission\Repositories\Interfaces\MissionRepositoryInterface;
 use Modules\Mission\Services\Interfaces\MissionServiceInterface;
 use Modules\User\Models\User;
-use Modules\User\Repositories\Interfaces\UserRepositoryInterface;
 
 /**
  * Class MissionController
