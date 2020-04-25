@@ -8,5 +8,5 @@ interface UserRepositoryInterface
 {
     public function all();
 
-    public function getById(int $id): User;
+    public function getByUser(int $id): User;
 }

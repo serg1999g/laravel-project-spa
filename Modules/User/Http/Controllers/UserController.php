@@ -17,11 +17,10 @@ class UserController extends BaseController
 
     public function show($id)
     {
-        $user = $this->userRepository->getById($id);
-        if ($user) {
-            return $this->sendResponse($user, __('messages.userData'));
-        }
+        $user = $this->userRepository->getByUser($id);
+        $user->images;
+        $response['user'] = $user;
 
-        return $this->sendError(__('messages.errorUser'));
+        return $this->sendResponse($response, __('messages.userData'));
     }
 }

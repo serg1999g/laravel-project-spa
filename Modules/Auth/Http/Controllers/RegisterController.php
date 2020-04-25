@@ -4,6 +4,7 @@ namespace Modules\Auth\Http\Controllers;
 
 use App\Http\Controllers\Api\BaseController;
 use Modules\Auth\Http\Requests\RegisterRequests;
+use Modules\Image\Services\Interfaces\ImageUserServiceInterface;
 use Modules\User\Models\Role;
 use Modules\User\Models\User;
 use Illuminate\Http\Request;
@@ -11,17 +12,23 @@ use Modules\User\Services\Interfaces\RoleServiceInterface;
 
 class RegisterController extends BaseController
 {
-    private $roleService;
+    protected $imageUserService;
 
-    public function __construct(RoleServiceInterface $roleService)
+    protected $roleService;
+
+    public function __construct(
+        RoleServiceInterface $roleService,
+        ImageUserServiceInterface $imageUserService
+    )
     {
         $this->roleService = $roleService;
+        $this->imageUserService = $imageUserService;
     }
 
     /**
      * Register api
      *
-     * @param $request
+     * @param RegisterRequests $request
      * @return \Illuminate\Http\JsonResponse
      */
     public function register(RegisterRequests $request)
@@ -34,8 +41,12 @@ class RegisterController extends BaseController
             'password' => bcrypt($request->input('password')),
         ]);
 
-        $this->roleService->assignRole($role, $user);
+        $image = $request->file('image');
+        if ($request->has('image')) {
+            $this->imageUserService->create($user, $image);
+        }
 
+        $this->roleService->assignRole($role, $user);
         $success['token'] = $user->createToken($user->email . '-' . now())->accessToken;
         $success['name'] = $user->name;
 

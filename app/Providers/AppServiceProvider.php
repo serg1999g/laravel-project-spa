@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
+use Modules\Image\Providers\ImageServiceProvider;
 use Modules\Mission\Providers\MissionServiceProvider;
 use Modules\User\Providers\UserServiceProvider;
 
@@ -17,6 +18,7 @@ class AppServiceProvider extends ServiceProvider
     {
         $this->app->register(MissionServiceProvider::class);
         $this->app->register(UserServiceProvider::class);
+        $this->app->register(ImageServiceProvider::class);
     }
 
     /**
