@@ -11,13 +11,20 @@ class ImageUserService implements ImageUserServiceInterface
 {
     public function create(User $user, $image)
     {
-        return $user->images()->create(['image' => $image->store('public')]);
+        if (!is_null($image)) {
+            $user->images()->create(['image' => $image->store('public')]);
+        }
     }
 
-    // TODO refactoring
+    // TODO
     public function delete(User $user)
     {
         $user->images()->delete();
         Storage::delete($user->id);
+    }
+
+    public function update(User $user)
+    {
+        // TODO
     }
 }

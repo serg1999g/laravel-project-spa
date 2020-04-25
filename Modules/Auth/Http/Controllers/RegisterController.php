@@ -41,10 +41,7 @@ class RegisterController extends BaseController
             'password' => bcrypt($request->input('password')),
         ]);
 
-        $image = $request->file('image');
-        if ($request->has('image')) {
-            $this->imageUserService->create($user, $image);
-        }
+        $this->imageUserService->create($user, $request->file('image'));
 
         $this->roleService->assignRole($role, $user);
         $success['token'] = $user->createToken($user->email . '-' . now())->accessToken;
