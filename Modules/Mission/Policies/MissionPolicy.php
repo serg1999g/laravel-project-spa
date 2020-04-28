@@ -11,16 +11,6 @@ class MissionPolicy
     use HandlesAuthorization;
 
     /**
-     * Create a new policy instance.
-     *
-     * @return void
-     */
-    public function __construct()
-    {
-        //
-    }
-
-    /**
      * @param User $user
      * @param Mission $mission
      * @return bool

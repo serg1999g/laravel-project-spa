@@ -7,8 +7,18 @@ use Modules\Image\Models\Image;
 
 class Mission extends Model
 {
+    /**
+     * table name
+     *
+     * @var string
+     */
     protected $table = 'missions';
 
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
     protected $fillable = [
         'name', 'description'
     ];

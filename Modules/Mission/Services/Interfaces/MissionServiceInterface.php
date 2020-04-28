@@ -7,7 +7,5 @@ use Modules\User\Models\User;
 
 interface MissionServiceInterface
 {
-    public function createMission(User $user, $mission);
-
-    public function deleteMission($mission): bool;
+//    public function createMission(User $user, $mission);
 }

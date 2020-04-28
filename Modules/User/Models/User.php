@@ -13,6 +13,11 @@ class User extends Authenticatable
 {
     use hasApiTokens, Notifiable;
 
+    /**
+     * table name
+     *
+     * @var string
+     */
     protected $table = 'users';
 
     /**

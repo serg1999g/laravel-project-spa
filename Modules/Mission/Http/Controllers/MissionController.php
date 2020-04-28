@@ -7,40 +7,12 @@ use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Modules\Mission\Http\Requests\MissionRequests;
-use Modules\Mission\Repositories\Interfaces\MissionRepositoryInterface;
-use Modules\Mission\Services\Interfaces\MissionServiceInterface;
+use Modules\Mission\Models\Mission;
 use Modules\User\Models\User;
 
-/**
- * Class MissionController
- * @package Modules\Mission\Http\Controllers
- */
+
 class MissionController extends BaseController
 {
-    /**
-     * @var MissionRepositoryInterface
-     */
-    private $missionRepository;
-
-    /**
-     * @var MissionServiceInterface
-     */
-    private $missionService;
-
-    /**
-     * MissionController constructor.
-     * @param MissionRepositoryInterface $missionRepository
-     * @param MissionServiceInterface $missionService
-     */
-    public function __construct(
-        MissionRepositoryInterface $missionRepository,
-        MissionServiceInterface $missionService
-    )
-    {
-        $this->missionRepository = $missionRepository;
-        $this->missionService = $missionService;
-    }
-
     /**
      *  All missions
      *
@@ -49,7 +21,7 @@ class MissionController extends BaseController
     public function index()
     {
         if (Auth::check()) {
-            $response['data'] = $this->missionRepository->all();
+            $response['data'] = Mission::all();
 
             return $this->sendResponse($response, __('messages.successfulOperation'));
         } else {
@@ -68,7 +40,7 @@ class MissionController extends BaseController
     {
         $user = $request->user();
         $data = $request->only('name', 'description');
-        $response['data'] = $this->missionService->createMission($user, $data);
+        $response['data'] = $user->missions()->create($data);
 
         return $this->sendResponse($response, __('messages.successMission'));
     }
@@ -81,7 +53,7 @@ class MissionController extends BaseController
      */
     public function show(int $id)
     {
-        $response = $this->missionRepository->getById($id);
+        $response = Mission::find($id);
 
         return $this->sendResponse($response, __('messages.successMission'));
     }
@@ -95,7 +67,7 @@ class MissionController extends BaseController
      */
     public function edit(int $id)
     {
-        $response = $this->missionRepository->getById($id);
+        $response = Mission::find($id);
         $this->authorize('edit', $response);
 
         return $this->sendResponse($response, __('messages.successMission'));
@@ -111,7 +83,7 @@ class MissionController extends BaseController
      */
     public function update(MissionRequests $request, int $id)
     {
-        $mission = $this->missionRepository->getById($id);
+        $mission = Mission::find($id);
         $this->authorize('update', $mission);
 
         $mission->fill($request->all());
@@ -131,9 +103,9 @@ class MissionController extends BaseController
      */
     public function destroy(int $id)
     {
-        $mission = $this->missionRepository->getById($id);
+        $mission = Mission::find($id);
         $this->authorize('delete', $mission);
-        $this->missionService->deleteMission($mission);
+        $mission->delete();
 
         return $this->sendResponse(null, __('messages.successMission'));
     }

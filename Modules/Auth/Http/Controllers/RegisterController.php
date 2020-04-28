@@ -12,10 +12,21 @@ use Modules\User\Services\Interfaces\RoleServiceInterface;
 
 class RegisterController extends BaseController
 {
+    /**
+     * @var ImageUserServiceInterface
+     */
     protected $imageUserService;
 
+    /**
+     * @var RoleServiceInterface
+     */
     protected $roleService;
 
+    /**
+     * RegisterController constructor.
+     * @param RoleServiceInterface $roleService
+     * @param ImageUserServiceInterface $imageUserService
+     */
     public function __construct(
         RoleServiceInterface $roleService,
         ImageUserServiceInterface $imageUserService
@@ -41,7 +52,9 @@ class RegisterController extends BaseController
             'password' => bcrypt($request->input('password')),
         ]);
 
-        $this->imageUserService->create($user, $request->file('image'));
+        if ($request->has('file')) {
+            $this->imageUserService->create($user, $request->file('image'));
+        }
 
         $this->roleService->assignRole($role, $user);
         $success['token'] = $user->createToken($user->email . '-' . now())->accessToken;

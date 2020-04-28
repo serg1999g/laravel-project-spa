@@ -4,20 +4,20 @@ namespace Modules\User\Http\Controllers;
 
 use App\Http\Controllers\Api\BaseController;
 use Illuminate\Http\Request;
-use Modules\User\Repositories\Interfaces\UserRepositoryInterface;
+use Modules\User\Models\User;
 
 class UserController extends BaseController
 {
-    private $userRepository;
 
-    public function __construct(UserRepositoryInterface $userRepository)
+    /**
+     * display user data
+     *
+     * @param int $id
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function show(int $id)
     {
-        $this->userRepository = $userRepository;
-    }
-
-    public function show($id)
-    {
-        $user = $this->userRepository->getByUser($id);
+        $user = User::find($id);
 
         $response['user'] = $user;
         $response['image'] = $user->images()->get();
