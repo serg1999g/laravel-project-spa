@@ -53,7 +53,7 @@ class MissionController extends BaseController
      */
     public function show(int $id)
     {
-        $response = Mission::find($id);
+        $response = Mission::findOrFail($id);
 
         return $this->sendResponse($response, __('messages.successMission'));
     }
@@ -67,7 +67,7 @@ class MissionController extends BaseController
      */
     public function edit(int $id)
     {
-        $response = Mission::find($id);
+        $response = Mission::findOrFail($id);
         $this->authorize('edit', $response);
 
         return $this->sendResponse($response, __('messages.successMission'));
@@ -83,7 +83,7 @@ class MissionController extends BaseController
      */
     public function update(MissionRequests $request, int $id)
     {
-        $mission = Mission::find($id);
+        $mission = Mission::findOrFail($id);
         $this->authorize('update', $mission);
 
         $mission->fill($request->all());
@@ -103,7 +103,7 @@ class MissionController extends BaseController
      */
     public function destroy(int $id)
     {
-        $mission = Mission::find($id);
+        $mission = Mission::findOrFail($id);
         $this->authorize('delete', $mission);
         $mission->delete();
 

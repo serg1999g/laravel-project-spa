@@ -17,7 +17,7 @@ class UserController extends BaseController
      */
     public function show(int $id)
     {
-        $user = User::find($id);
+        $user = User::findOrFail($id);
 
         $response['user'] = $user;
         $response['image'] = $user->images()->get();
