@@ -52,7 +52,7 @@ class RegisterController extends BaseController
             'password' => bcrypt($request->input('password')),
         ]);
 
-        if ($request->has('file')) {
+        if ($request->has('image')) {
             $this->imageUserService->create($user, $request->file('image'));
         }
 
