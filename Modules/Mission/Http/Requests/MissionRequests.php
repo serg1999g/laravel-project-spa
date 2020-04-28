@@ -24,8 +24,8 @@ class MissionRequests extends FormRequest
     public function rules()
     {
         return [
-            'name' => 'required',
-            'description' => 'required'
+            'name' => 'required|string|max:20',
+            'description' => 'required|string|max:255'
         ];
     }
 }
