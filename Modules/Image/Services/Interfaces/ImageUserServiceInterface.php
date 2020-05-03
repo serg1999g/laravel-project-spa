@@ -6,5 +6,7 @@ use Modules\User\Models\User;
 
 interface ImageUserServiceInterface
 {
-    public function create(User $user, string $image);
+    public function create(User $user, $image);
+
+    public function delete(int $id);
 }

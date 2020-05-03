@@ -3,6 +3,7 @@
 namespace Modules\Image\Services;
 
 use Illuminate\Support\Facades\Storage;
+use Modules\Image\Models\Image;
 use Modules\User\Models\User;
 use Modules\Image\Services\Interfaces\ImageUserServiceInterface;
 
@@ -15,7 +16,7 @@ class ImageUserService implements ImageUserServiceInterface
      * @param User $user
      * @param string $image
      */
-    public function create(User $user, string $image)
+    public function create(User $user, $image)
     {
         if ($image !== null) {
             $user->images()->create(['image' => $image->store('public')]);
@@ -27,12 +28,13 @@ class ImageUserService implements ImageUserServiceInterface
     /**
      * Delete avatar from the database and storage
      *
-     * @param User $user
+     * @param int $id
      */
-    public function delete(User $user)
+    public function delete(int $id)
     {
-        $user->images()->delete();
-        Storage::delete($user->id);
+        $image = Image::findOrFail($id);
+        $image->delete();
+        Storage::delete($image->image);
     }
 
     /**

@@ -21,7 +21,7 @@ class MissionController extends BaseController
     public function index()
     {
         if (Auth::check()) {
-            $response['data'] = Mission::all();
+            $response['data'] = Mission::with('images')->get();
 
             return $this->sendResponse($response, __('messages.successfulOperation'));
         } else {

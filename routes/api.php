@@ -10,6 +10,7 @@ use Modules\Auth\Http\Controllers\LogoutController;
 
 use Modules\User\Http\Controllers\UserController;
 use Modules\Mission\Http\Controllers\MissionController;
+use Modules\Image\Http\Controllers\ImageController;
 
 /** @var  \Illuminate\Routing\Router $router */
 /*
@@ -36,6 +37,8 @@ $router->group(['middleware' => ['auth:api']], function (Router $router) {
     $router->delete('mission/{id}/destroy', [MissionController::class, 'destroy']);
     $router->get('mission/{id}/edit', [MissionController::class, 'edit']);
     $router->get('mission/{id}/show', [MissionController::class, 'show']);
+
+    $router->delete('image/{id}/delete', [ImageController::class, 'delete']);
 });
 
 

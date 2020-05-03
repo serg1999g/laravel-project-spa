@@ -4,7 +4,7 @@ return [
     'register' => 'User register successfully.',
     'login' => 'User logged in.',
     'logout' => 'Successfully logged out.',
-    'userData' => 'UserData',
+    'userData' => 'User Data',
     'errorUser' => 'User not found!',
 
     'successMission' => 'Mission register successfully.',
