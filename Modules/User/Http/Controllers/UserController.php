@@ -18,6 +18,8 @@ class UserController extends BaseController
      */
     public function show(int $id)
     {
+        // TODO refactoring
+
 //        $user = User::findOrFail($id);
 
         $response['user'] = User::with(['images', 'missions'])->where('id', $id)->get();
