@@ -42,7 +42,7 @@ class MissionController extends BaseController
         $data = $request->only('name', 'description');
         $response['data'] = $user->missions()->create($data);
 
-        return $this->sendResponse($response, __('messages.successMission'));
+        return $this->sendResponse($response, __('messages.successfulOperation'));
     }
 
     /**
@@ -55,7 +55,7 @@ class MissionController extends BaseController
     {
         $response = Mission::findOrFail($id);
 
-        return $this->sendResponse($response, __('messages.successMission'));
+        return $this->sendResponse($response, __('messages.successfulOperation'));
     }
 
     /**
@@ -70,7 +70,7 @@ class MissionController extends BaseController
         $response = Mission::findOrFail($id);
         $this->authorize('edit', $response);
 
-        return $this->sendResponse($response, __('messages.successMission'));
+        return $this->sendResponse($response, __('messages.successfulOperation'));
     }
 
     /**
@@ -90,7 +90,7 @@ class MissionController extends BaseController
         $mission->save();
         $response['data'] = $mission;
 
-        return $this->sendResponse($response, __('messages.successMission'));
+        return $this->sendResponse($response, __('messages.successfulOperation'));
     }
 
     /**
@@ -107,6 +107,6 @@ class MissionController extends BaseController
         $this->authorize('delete', $mission);
         $mission->delete();
 
-        return $this->sendResponse(null, __('messages.successMission'));
+        return $this->sendResponse(null, __('messages.successfulOperation'));
     }
 }

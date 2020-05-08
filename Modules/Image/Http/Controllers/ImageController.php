@@ -33,6 +33,6 @@ class ImageController extends BaseController
             $this->imageUserService->delete($id);
         }
 
-        return $this->sendResponse(null, 'dsadasdsa');
+        return $this->sendResponse(null, __('messages.successfulOperation'));
     }
 }

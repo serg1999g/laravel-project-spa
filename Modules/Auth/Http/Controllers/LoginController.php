@@ -48,9 +48,9 @@ class LoginController extends BaseController
         $tokenContent = json_decode($contentString, true);
 
         if (empty($tokenContent['access_token'])) {
-            return $this->sendError('Unauthenticated');
+            return $this->sendError(__('auth.unauthenticated'));
         }
 
-        return $this->sendResponse($tokenContent, 'Authenticated');
+        return $this->sendResponse($tokenContent, __('auth.authenticated'));
     }
 }
