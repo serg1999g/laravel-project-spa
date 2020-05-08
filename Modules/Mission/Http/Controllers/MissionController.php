@@ -6,7 +6,7 @@ use App\Http\Controllers\Api\BaseController;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Modules\Mission\Http\Requests\MissionRequests;
+use Modules\Mission\Http\Requests\MissionRequest;
 use Modules\Mission\Models\Mission;
 use Modules\User\Models\User;
 
@@ -32,11 +32,11 @@ class MissionController extends BaseController
     /**
      *  Mission creation
      *
-     * @param MissionRequests $request
+     * @param MissionRequest $request
      * @param User $user
      * @return \Illuminate\Http\JsonResponse
      */
-    public function create(MissionRequests $request)
+    public function create(MissionRequest $request)
     {
         $user = $request->user();
         $data = $request->only('name', 'description');
@@ -76,12 +76,12 @@ class MissionController extends BaseController
     /**
      * Update mission if you are its creator
      *
-     * @param MissionRequests $request
+     * @param MissionRequest $request
      * @param int $id
      * @return \Illuminate\Http\JsonResponse
      * @throws \Illuminate\Auth\Access\AuthorizationException
      */
-    public function update(MissionRequests $request, int $id)
+    public function update(MissionRequest $request, int $id)
     {
         $mission = Mission::findOrFail($id);
         $this->authorize('update', $mission);

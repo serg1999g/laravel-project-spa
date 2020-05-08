@@ -114,4 +114,22 @@ return [
 
     'password_timeout' => 10800,
 
+    /*
+    |--------------------------------------------------------------------------
+    | OAuth Proxy Authentication
+    |--------------------------------------------------------------------------
+    |
+    | If you are planning to use your application to self-authenticate as a
+    | proxy, you can define the client and grant type to use here. This is
+    | sometimes the case when a trusted Single Page Application doesn't
+    | use a backend to send the authentication request, but instead
+    | relies on the API to handle proxying the request to itself.
+    |
+    */
+
+    'proxy' => [
+        'client_id' => env('PASSWORD_CLIENT_ID'),
+        'client_secret' => env('PASSWORD_CLIENT_SECRET'),
+    ],
+
 ];

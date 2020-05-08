@@ -3,7 +3,7 @@
 namespace Modules\Auth\Http\Controllers;
 
 use App\Http\Controllers\Api\BaseController;
-use Modules\Auth\Http\Requests\RegisterRequests;
+use Modules\Auth\Http\Requests\RegisterRequest;
 use Modules\Image\Services\Interfaces\ImageUserServiceInterface;
 use Modules\User\Models\Role;
 use Modules\User\Models\User;
@@ -39,10 +39,10 @@ class RegisterController extends BaseController
     /**
      * Register api
      *
-     * @param RegisterRequests $request
+     * @param RegisterRequest $request
      * @return \Illuminate\Http\JsonResponse
      */
-    public function register(RegisterRequests $request)
+    public function register(RegisterRequest $request)
     {
         $role = Role::where('name', 'user')->first();
 
@@ -57,9 +57,7 @@ class RegisterController extends BaseController
         }
 
         $this->roleService->assignRole($role, $user);
-        $success['token'] = $user->createToken($user->email . '-' . now())->accessToken;
-        $success['name'] = $user->name;
 
-        return $this->sendResponse($success, __('messages.register'));
+        return $this->sendResponse(true, __('messages.register'));
     }
 }

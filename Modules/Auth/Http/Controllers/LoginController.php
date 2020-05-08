@@ -3,7 +3,7 @@
 namespace Modules\Auth\Http\Controllers;
 
 use App\Http\Controllers\Api\BaseController;
-use Modules\Auth\Http\Requests\LoginRequests;
+use Modules\Auth\Http\Requests\LoginRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -12,21 +12,45 @@ class LoginController extends BaseController
     /**
      * Login api
      *
-     * @param $request
-     * @return \Illuminate\Http\JsonResponse
+     * @param LoginRequest $request
+     * @return mixed
      */
-    public function login(LoginRequests $request)
+    public function login(LoginRequest $request)
     {
-        $credentials = $request->only('email', 'password');
+        $username = $request->input('email');
+        $password = $request->input('password');
 
-        if (Auth::attempt($credentials)) {
-            $user = $request->user();
-            $success['role'] = $user->roles[0]['name'];
-            $success['token'] = $user->createToken($user->email . '-' . now())->accessToken;
+        return $this->authenticate('password', [
+            'username' => $username,
+            'password' => $password,
+        ]);
+    }
 
-            return $this->sendResponse($success, __('messages.login'));
-        } else {
-            return $this->sendError(__('messages.errorUser'));
+    /**
+     * Generate a token and return
+     *
+     * @param string $grantType
+     * @param $credentials
+     * @return mixed
+     */
+    protected function authenticate(string $grantType, array $credentials)
+    {
+        $data = array_replace($credentials, [
+            'grant_type' => $grantType,
+            'client_id' => config('auth.proxy.client_id'),
+            'client_secret' => config('auth.proxy.client_secret'),
+            'scopes' => '[*]',
+        ]);
+
+        $tokenRequest = Request::create('/oauth/token', 'post', $data);
+        $tokenResponse = app()->handle($tokenRequest);
+        $contentString = $tokenResponse->getContent();
+        $tokenContent = json_decode($contentString, true);
+
+        if (empty($tokenContent['access_token'])) {
+            return $this->sendError('Unauthenticated');
         }
+
+        return $this->sendResponse($tokenContent, 'Authenticated');
     }
 }

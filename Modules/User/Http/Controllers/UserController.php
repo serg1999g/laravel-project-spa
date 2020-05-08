@@ -4,7 +4,6 @@ namespace Modules\User\Http\Controllers;
 
 use App\Http\Controllers\Api\BaseController;
 use Illuminate\Http\Request;
-use Modules\Image\Services\Interfaces\ImageUserServiceInterface;
 use Modules\User\Models\User;
 
 class UserController extends BaseController
@@ -18,16 +17,10 @@ class UserController extends BaseController
      */
     public function show(int $id)
     {
-        // TODO refactoring
-
-//        $user = User::findOrFail($id);
-
+        $kek['data'] = User::find($id);
         $response['user'] = User::with(['images', 'missions'])->where('id', $id)->get();
-//        $response['user'] = $user;
-//        $response['image'] = $user->images()->get();
-//        $response['mission'] = $user->missions()->get();
 
-        return $this->sendResponse($response, __('messages.userData'));
+        return $this->sendResponse($kek, __('messages.userData'));
     }
 
     public function edit(int $id)

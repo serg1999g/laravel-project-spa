@@ -1,10 +1,10 @@
 <?php
 
-namespace Modules\Auth\Http\Requests;
+namespace Modules\Mission\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class LoginRequests extends FormRequest
+class MissionRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,8 +24,8 @@ class LoginRequests extends FormRequest
     public function rules()
     {
         return [
-            'email' => 'required|email|exists:users,email|max:255',
-            'password' => 'required|string|min:6'
+            'name' => 'required|string|max:20',
+            'description' => 'required|string|max:255'
         ];
     }
 }
