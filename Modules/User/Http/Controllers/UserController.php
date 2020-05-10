@@ -17,10 +17,9 @@ class UserController extends BaseController
      */
     public function show(int $id)
     {
-        $kek['data'] = User::find($id);
         $response['user'] = User::with(['images', 'missions'])->where('id', $id)->get();
 
-        return $this->sendResponse($kek, __('messages.userData'));
+        return $this->sendResponse($response, __('messages.userData'));
     }
 
     public function edit(int $id)
