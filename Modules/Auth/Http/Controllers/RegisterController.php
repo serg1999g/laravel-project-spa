@@ -2,7 +2,6 @@
 
 namespace Modules\Auth\Http\Controllers;
 
-use App\Http\Controllers\Api\BaseController;
 use Modules\Auth\Http\Requests\RegisterRequest;
 use Modules\Image\Services\Interfaces\ImageUserServiceInterface;
 use Modules\User\Models\Role;
@@ -10,7 +9,7 @@ use Modules\User\Models\User;
 use Illuminate\Http\Request;
 use Modules\User\Services\Interfaces\RoleServiceInterface;
 
-class RegisterController extends BaseController
+class RegisterController extends AuthenticateController
 {
     /**
      * @var ImageUserServiceInterface
@@ -58,6 +57,9 @@ class RegisterController extends BaseController
 
         $this->roleService->assignRole($role, $user);
 
-        return $this->sendResponse(true, __('messages.register'));
+        return $this->authenticate('password', [
+            'username' => $request->input('email'),
+            'password' => $request->input('password'),
+        ]);
     }
 }
