@@ -24,15 +24,14 @@ use Modules\Image\Http\Controllers\ImageController;
 |
 */
 
-$router->middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
-});
 
 $router->group(['middleware' => ['auth:api']], function (Router $router) {
     $router->post('logout', [LogoutController::class, 'logout']);
 
     $router->group(['prefix' => 'user'], function (Router $router) {
-        $router->get('{id}/detail', [UserController::class, 'show']);
+        $router->get('auth-user', [UserController::class,'AuthUser']);
+        $router->get('{id}/show', [UserController::class, 'show']);
+        $router->get('/', [UserController::class, 'index']);
     });
 
     $router->group(['prefix' => 'mission'], function (Router $router) {

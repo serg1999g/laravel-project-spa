@@ -22,9 +22,30 @@ class UserController extends BaseController
         return $this->sendResponse($response, __('messages.userData'));
     }
 
-    public function edit(int $id)
+    /**
+     * get all users
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function index()
     {
-        $user = User::findOrFail($id);
+        $response = User::with(['images'])->get();
 
+        return $this->sendResponse($response, __('messages.userData'));
+    }
+
+    /**
+     * get authenticated user
+     *
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function AuthUser(Request $request)
+    {
+        $user = $request->user();
+
+        $response = User::with(['images'])->where('id', $user->id)->get();
+
+        return $this->sendResponse($response, __('messages.userData'));
     }
 }
