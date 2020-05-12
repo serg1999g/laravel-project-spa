@@ -30,13 +30,19 @@ $router->middleware('auth:api')->get('/user', function (Request $request) {
 
 $router->group(['middleware' => ['auth:api']], function (Router $router) {
     $router->post('logout', [LogoutController::class, 'logout']);
-    $router->get('user/{id}/detail', [UserController::class, 'show']);
-    $router->post('mission/create', [MissionController::class, 'create']);
-    $router->get('mission', [MissionController::class, 'index']);
-    $router->put('mission/{id}/update', [MissionController::class, 'update']);
-    $router->delete('mission/{id}/destroy', [MissionController::class, 'destroy']);
-    $router->get('mission/{id}/edit', [MissionController::class, 'edit']);
-    $router->get('mission/{id}/show', [MissionController::class, 'show']);
+
+    $router->group(['prefix' => 'user'], function (Router $router) {
+        $router->get('{id}/detail', [UserController::class, 'show']);
+    });
+
+    $router->group(['prefix' => 'mission'], function (Router $router) {
+        $router->post('create', [MissionController::class, 'create']);
+        $router->get('/', [MissionController::class, 'index']);
+        $router->put('{id}/update', [MissionController::class, 'update']);
+        $router->delete('{id}/destroy', [MissionController::class, 'destroy']);
+        $router->get('{id}/edit', [MissionController::class, 'edit']);
+        $router->get('{id}/show', [MissionController::class, 'show']);
+    });
 
     $router->delete('image/{id}/delete', [ImageController::class, 'delete']);
 });
