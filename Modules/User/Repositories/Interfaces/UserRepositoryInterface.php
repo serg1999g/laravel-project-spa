@@ -2,9 +2,10 @@
 
 namespace Modules\User\Repositories\Interfaces;
 
-use Modules\User\Models\User;
 
 interface UserRepositoryInterface
 {
-    //
+    public function findById(int $id);
+
+    public function findUserInfo(int $id);
 }

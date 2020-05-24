@@ -2,19 +2,19 @@
 
 namespace Modules\Mission\Repositories;
 
-use Modules\Mission\Models\Mission;
+use Modules\Mission\Builder\MissionQueryBuilder;
 use Modules\Mission\Repositories\Interfaces\MissionRepositoryInterface;
 
 
-class MissionRepository implements MissionRepositoryInterface
+class MissionRepository extends MissionQueryBuilder implements MissionRepositoryInterface
 {
-//    public function all()
-//    {
-//        return Mission::all();
-//    }
-//
-//    public function getById(int $id): Mission
-//    {
-//        return Mission::findOrFail($id);
-//    }
+    public function findMissionByOwnerId(int $id = null)
+    {
+        if (empty($id)) {
+            return null;
+        }
+        return $this->BuildMissionQuery($id)
+            ->with('images')
+            ->get();
+    }
 }

@@ -23,7 +23,6 @@ class ImageUserService implements ImageUserServiceInterface
         }
     }
 
-    // TODO
 
     /**
      * Delete avatar from the database and storage
