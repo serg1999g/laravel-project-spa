@@ -8,7 +8,7 @@ use Modules\Mission\Repositories\Interfaces\MissionRepositoryInterface;
 
 class MissionRepository extends MissionQueryBuilder implements MissionRepositoryInterface
 {
-    public function findMissionByOwnerId(int $id = null)
+    public function findMissionsByOwnerId(int $id = null)
     {
         if (empty($id)) {
             return null;

@@ -29,9 +29,10 @@ $router->group(['middleware' => ['auth:api']], function (Router $router) {
     $router->post('logout', [LogoutController::class, 'logout']);
 
     $router->group(['prefix' => 'user'], function (Router $router) {
-        $router->get('auth-user', [UserController::class,'AuthUser']);
+        $router->get('auth-user', [UserController::class, 'AuthUser']);
         $router->get('{id}/show', [UserController::class, 'show']);
         $router->get('/', [UserController::class, 'index']);
+        $router->get('/profile', [UserController::class, 'AuthProfile']);
     });
 
     $router->group(['prefix' => 'mission'], function (Router $router) {

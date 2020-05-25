@@ -32,7 +32,7 @@ class UserController extends BaseController
     public function show(int $id)
     {
         $response['user'] = $this->userRepository->findUserInfo($id);
-        $response['mission'] = $this->missionRepository->findMissionByOwnerId($id);
+        $response['mission'] = $this->missionRepository->findMissionsByOwnerId($id);
 
         return $this->sendResponse($response, __('messages.userData'));
     }
@@ -59,6 +59,22 @@ class UserController extends BaseController
     {
         $user = $request->user();
         $response = $this->userRepository->findById($user->id)->get();
+
+        return $this->sendResponse($response, __('messages.userData'));
+    }
+
+
+    /**
+     * get Profile Auth User
+     *
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function AuthProfile(Request $request)
+    {
+        $user = $request->user();
+        $response['user'] = $this->userRepository->findUserInfo($user->id);
+        $response['mission'] = $this->missionRepository->findMissionsByOwnerId($user->id);
 
         return $this->sendResponse($response, __('messages.userData'));
     }

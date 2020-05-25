@@ -20,7 +20,7 @@ class Mission extends Model
      * @var array
      */
     protected $fillable = [
-        'name', 'description'
+        'name', 'description', 'content'
     ];
 
     public function images()

@@ -6,7 +6,6 @@ use App\Http\Controllers\Api\BaseController;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Modules\Image\Models\Image;
 use Modules\Mission\Http\Requests\MissionRequest;
 use Modules\Mission\Models\Mission;
 use Modules\User\Models\User;
@@ -40,14 +39,14 @@ class MissionController extends BaseController
     public function create(MissionRequest $request)
     {
         $user = $request->user();
-
         $image = $request->file('image');
 
         $response = $user->missions()->create([
             'name' => $request->input('name'),
             'description' => $request->input('description'),
-            'content'=>$request->input('content'),
+            'content' => $request->input('content'),
         ]);
+
         $response->images()->create(['image' => $image->store('public')]);
 
         return $this->sendResponse($response, __('messages.successfulOperation'));

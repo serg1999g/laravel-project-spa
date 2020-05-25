@@ -18,6 +18,7 @@ class CreateMissionsTable extends Migration
             $table->unsignedBigInteger('user_id');
             $table->string('name');
             $table->string('description');
+            $table->string('content');
             $table->timestamps();
 
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
