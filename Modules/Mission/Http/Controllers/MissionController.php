@@ -4,11 +4,14 @@ namespace Modules\Mission\Http\Controllers;
 
 use App\Http\Controllers\Api\BaseController;
 use Exception;
+use Illuminate\Auth\Access\AuthorizationException;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Modules\Mission\Http\Requests\MissionRequest;
 use Modules\Mission\Models\Mission;
 use Modules\User\Models\User;
+use PHPUnit\Util\Json;
 
 
 class MissionController extends BaseController
@@ -16,14 +19,14 @@ class MissionController extends BaseController
     /**
      *  All missions
      *
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
     public function index()
     {
         if (Auth::check()) {
-            $response = Mission::with('images')->get();
+            $response = Mission::with('images')->get()->toArray();
 
-            return $this->sendResponse($response, __('messages.successfulOperation'));
+            return $this->respondWithArray($response);
         } else {
             return $this->sendError(__('messages.unsuccessfulOperation'));
         }
@@ -33,8 +36,7 @@ class MissionController extends BaseController
      *  Mission creation
      *
      * @param MissionRequest $request
-     * @param User $user
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
     public function create(MissionRequest $request)
     {
@@ -56,21 +58,21 @@ class MissionController extends BaseController
      * Show mission
      *
      * @param int $id
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
     public function show(int $id)
     {
-        $response = Mission::with('images')->where('id', $id)->get();
+        $response = Mission::with('images')->where('id', $id)->get()->toArray();
 
-        return $this->sendResponse($response, __('messages.successfulOperation'));
+        return $this->respondWithArray($response);
     }
 
     /**
      * Edit mission if you are its creator
      *
      * @param int $id
-     * @return \Illuminate\Http\JsonResponse
-     * @throws \Illuminate\Auth\Access\AuthorizationException
+     * @return JsonResponse
+     * @throws AuthorizationException
      */
     public function edit(int $id)
     {
@@ -85,8 +87,8 @@ class MissionController extends BaseController
      *
      * @param MissionRequest $request
      * @param int $id
-     * @return \Illuminate\Http\JsonResponse
-     * @throws \Illuminate\Auth\Access\AuthorizationException
+     * @return JsonResponse
+     * @throws AuthorizationException
      */
     public function update(MissionRequest $request, int $id)
     {
@@ -104,8 +106,8 @@ class MissionController extends BaseController
      * Delete mission if you are its creator
      *
      * @param int $id
-     * @return \Illuminate\Http\JsonResponse
-     * @throws \Illuminate\Auth\Access\AuthorizationException
+     * @return Json
+     * @throws AuthorizationException
      * @throws Exception
      */
     public function destroy(int $id)
@@ -114,6 +116,6 @@ class MissionController extends BaseController
         $this->authorize('delete', $mission);
         $mission->delete();
 
-        return $this->sendResponse(null, __('messages.successfulOperation'));
+        return $this->respondWithMessage(__('messages.successfulOperation'));
     }
 }

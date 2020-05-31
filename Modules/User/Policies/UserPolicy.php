@@ -9,4 +9,14 @@ class UserPolicy
 {
     use HandlesAuthorization;
 
+
+    /**
+     * @param User $user
+     * @param User $targetUser
+     * @return bool
+     */
+    public function update(User $user, User $targetUser)
+    {
+        return $user->id === $targetUser->id;
+    }
 }

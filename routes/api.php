@@ -33,6 +33,8 @@ $router->group(['middleware' => ['auth:api']], function (Router $router) {
         $router->get('{id}/show', [UserController::class, 'show']);
         $router->get('/', [UserController::class, 'index']);
         $router->get('/profile', [UserController::class, 'AuthProfile']);
+        $router->get('/edit', [UserController::class, 'edit']);
+        $router->post('/update', [UserController::class, 'update']);
     });
 
     $router->group(['prefix' => 'mission'], function (Router $router) {

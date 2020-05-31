@@ -3,6 +3,8 @@
 namespace Modules\User\Http\Controllers;
 
 use App\Http\Controllers\Api\BaseController;
+use Illuminate\Auth\Access\AuthorizationException;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Modules\Mission\Repositories\Interfaces\MissionRepositoryInterface;
 use Modules\User\Models\User;
@@ -11,9 +13,20 @@ use Modules\User\Repositories\Interfaces\UserRepositoryInterface;
 class UserController extends BaseController
 {
 
+    /**
+     * @var UserRepositoryInterface
+     */
     protected $userRepository;
+    /**
+     * @var MissionRepositoryInterface
+     */
     protected $missionRepository;
 
+    /**
+     * UserController constructor.
+     * @param UserRepositoryInterface $userRepository
+     * @param MissionRepositoryInterface $missionRepository
+     */
     public function __construct(
         UserRepositoryInterface $userRepository,
         MissionRepositoryInterface $missionRepository
@@ -27,7 +40,7 @@ class UserController extends BaseController
      * display user data
      *
      * @param int $id
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
     public function show(int $id)
     {
@@ -38,9 +51,40 @@ class UserController extends BaseController
     }
 
     /**
+     * @param Request $request
+     * @return JsonResponse
+     * @throws AuthorizationException
+     */
+    public function edit(Request $request)
+    {
+        $user = $request->user();
+
+        $this->authorize('update', $user);
+
+        return $this->sendResponse($user, __('messages.userData'));
+    }
+
+
+    /**
+     * @param Request $request
+     * @return JsonResponse
+     * @throws AuthorizationException
+     */
+    public function update(Request $request)
+    {
+        $user = $request->user();
+
+        $this->authorize('update', $user);
+        $user->fill($request->all());
+        $user->save();
+
+        return $this->respondWithArray($user);
+    }
+
+    /**
      * get all users
      *
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
     public function index()
     {
@@ -53,14 +97,14 @@ class UserController extends BaseController
      * get authenticated user
      *
      * @param Request $request
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
     public function AuthUser(Request $request)
     {
         $user = $request->user();
-        $response = $this->userRepository->findById($user->id)->get();
+        $response = User::find($user->id)->where('id', $user->id)->get()->toArray();
 
-        return $this->sendResponse($response, __('messages.userData'));
+        return $this->respondWithArray($response);
     }
 
 
@@ -68,14 +112,14 @@ class UserController extends BaseController
      * get Profile Auth User
      *
      * @param Request $request
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
     public function AuthProfile(Request $request)
     {
         $user = $request->user();
-        $response['user'] = $this->userRepository->findUserInfo($user->id);
-        $response['mission'] = $this->missionRepository->findMissionsByOwnerId($user->id);
+        $response = $this->userRepository->findUserInfo($user->id)->toArray();
+//        $response['mission'] = $this->missionRepository->findMissionsByOwnerId($user->id);
 
-        return $this->sendResponse($response, __('messages.userData'));
+        return $this->respondWithArray($response);
     }
 }

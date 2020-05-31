@@ -18,7 +18,7 @@ class ImageUserService implements ImageUserServiceInterface
      */
     public function create(User $user, $image)
     {
-        if ($image !== null) {
+        if ($image !== null && isset($image)) {
             $user->images()->create(['image' => $image->store('public')]);
         }
     }
