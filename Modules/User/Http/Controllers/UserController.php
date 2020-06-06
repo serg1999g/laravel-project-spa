@@ -3,12 +3,13 @@
 namespace Modules\User\Http\Controllers;
 
 use App\Http\Controllers\Api\BaseController;
-use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 use Modules\Mission\Repositories\Interfaces\MissionRepositoryInterface;
 use Modules\User\Models\User;
+use Illuminate\Http\Request;
 use Modules\User\Repositories\Interfaces\UserRepositoryInterface;
+use PHPUnit\Util\Json;
 
 class UserController extends BaseController
 {
@@ -53,7 +54,7 @@ class UserController extends BaseController
     /**
      * @param Request $request
      * @return JsonResponse
-     * @throws AuthorizationException
+     * @throws \Illuminate\Auth\Access\AuthorizationException
      */
     public function edit(Request $request)
     {
@@ -68,7 +69,7 @@ class UserController extends BaseController
     /**
      * @param Request $request
      * @return JsonResponse
-     * @throws AuthorizationException
+     * @throws \Illuminate\Auth\Access\AuthorizationException
      */
     public function update(Request $request)
     {
@@ -78,7 +79,7 @@ class UserController extends BaseController
         $user->fill($request->all());
         $user->save();
 
-        return $this->respondWithArray($user);
+        return $this->respondWithArray(['data' => $user]);
     }
 
     /**
@@ -117,9 +118,34 @@ class UserController extends BaseController
     public function AuthProfile(Request $request)
     {
         $user = $request->user();
-        $response = $this->userRepository->findUserInfo($user->id)->toArray();
+//        $response = User::find($user->id)->where('id', $user->id)->get()->toArray();
 //        $response['mission'] = $this->missionRepository->findMissionsByOwnerId($user->id);
 
-        return $this->respondWithArray($response);
+        return $this->respondWithArray(['data' => $user]);
+    }
+
+    /**
+     * Change password
+     *
+     * @param Request $request
+     * @return JsonResponse|Json
+     */
+    public function changePassword(Request $request)
+    {
+        $authUser = $request->user();
+
+        $user = User::find($authUser->id);
+
+        $oldPassword = $request->input('current_password');
+        $newPassword = $request->input('password');
+
+        if (Hash::check($oldPassword, $user->password)) {
+
+            $user->password = bcrypt($newPassword);
+            $user->save();
+
+            return $this->respondWithMessage('changed');
+        }
+        return $this->sendError('Incorrect current password');
     }
 }

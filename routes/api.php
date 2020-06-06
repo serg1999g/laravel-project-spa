@@ -35,6 +35,7 @@ $router->group(['middleware' => ['auth:api']], function (Router $router) {
         $router->get('/profile', [UserController::class, 'AuthProfile']);
         $router->get('/edit', [UserController::class, 'edit']);
         $router->post('/update', [UserController::class, 'update']);
+        $router->post('/change', [UserController::class, 'changePassword']);
     });
 
     $router->group(['prefix' => 'mission'], function (Router $router) {
