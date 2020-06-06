@@ -53,16 +53,17 @@ class UserController extends BaseController
 
     /**
      * @param Request $request
+     * @param int $id
      * @return JsonResponse
      * @throws \Illuminate\Auth\Access\AuthorizationException
      */
-    public function edit(Request $request)
+    public function edit(Request $request, int $id)
     {
         $user = $request->user();
-
+        $response = $this->missionRepository->findMissionsByOwnerId($id);
         $this->authorize('update', $user);
 
-        return $this->sendResponse($user, __('messages.userData'));
+        return $this->sendResponse($response, __('messages.userData'));
     }
 
 

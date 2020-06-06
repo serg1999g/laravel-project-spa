@@ -49,7 +49,9 @@ class MissionController extends BaseController
             'content' => $request->input('content'),
         ]);
 
-        $response->images()->create(['image' => $image->store('public')]);
+        if ($request->has('image')) {
+            $response->images()->create(['image' => $image->store('public')]);
+        }
 
         return $this->sendResponse($response, __('messages.successfulOperation'));
     }
@@ -87,7 +89,7 @@ class MissionController extends BaseController
      *
      * @param MissionRequest $request
      * @param int $id
-     * @return JsonResponse
+     * @return Json
      * @throws AuthorizationException
      */
     public function update(MissionRequest $request, int $id)
@@ -97,9 +99,9 @@ class MissionController extends BaseController
 
         $mission->fill($request->all());
         $mission->save();
-        $response = $mission;
+        $response[] = $mission;
 
-        return $this->sendResponse($response, __('messages.successfulOperation'));
+        return $this->respondWithArray($response);
     }
 
     /**
