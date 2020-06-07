@@ -25,7 +25,7 @@ class ImageController extends BaseController
 
     /**
      * @param int $id
-     * @return \Illuminate\Http\JsonResponse
+     * @return \PHPUnit\Util\Json
      */
     public function delete(int $id)
     {
@@ -33,6 +33,6 @@ class ImageController extends BaseController
             $this->imageUserService->delete($id);
         }
 
-        return $this->sendResponse(null, __('messages.successfulOperation'));
+        return $this->respondWithMessage(__('messages.successfulOperation'));
     }
 }

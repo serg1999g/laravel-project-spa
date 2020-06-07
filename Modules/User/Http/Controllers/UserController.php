@@ -5,10 +5,12 @@ namespace Modules\User\Http\Controllers;
 use App\Http\Controllers\Api\BaseController;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Storage;
 use Modules\Mission\Repositories\Interfaces\MissionRepositoryInterface;
 use Modules\User\Models\User;
 use Illuminate\Http\Request;
 use Modules\User\Repositories\Interfaces\UserRepositoryInterface;
+use Modules\User\Http\Resources\UserResource;
 use PHPUnit\Util\Json;
 
 class UserController extends BaseController
@@ -114,15 +116,14 @@ class UserController extends BaseController
      * get Profile Auth User
      *
      * @param Request $request
-     * @return JsonResponse
+     * @return UserResource
      */
     public function AuthProfile(Request $request)
     {
         $user = $request->user();
-//        $response = User::find($user->id)->where('id', $user->id)->get()->toArray();
-//        $response['mission'] = $this->missionRepository->findMissionsByOwnerId($user->id);
+        $response = UserResource::make($user);
 
-        return $this->respondWithArray(['data' => $user]);
+        return $this->respondWithArray(['data' => $response]);
     }
 
     /**
