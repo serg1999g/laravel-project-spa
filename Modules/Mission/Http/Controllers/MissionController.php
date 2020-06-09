@@ -7,10 +7,11 @@ use Exception;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
 use Modules\Mission\Http\Requests\MissionRequest;
+use Modules\Mission\Http\Resources\MissionResource;
 use Modules\Mission\Models\Mission;
-use Modules\User\Models\User;
 use PHPUnit\Util\Json;
 
 
@@ -24,9 +25,10 @@ class MissionController extends BaseController
     public function index()
     {
         if (Auth::check()) {
-            $response = Mission::with('images')->get()->toArray();
+            $missions = Mission::all();
+            $response = MissionResource::collection($missions);
 
-            return $this->respondWithArray($response);
+            return $this->respondWithArray(['data'=>$response]);
         } else {
             return $this->sendError(__('messages.unsuccessfulOperation'));
         }
@@ -44,13 +46,22 @@ class MissionController extends BaseController
         $image = $request->file('image');
 
         $response = $user->missions()->create([
-            'name' => $request->input('name'),
-            'description' => $request->input('description'),
-            'content' => $request->input('content'),
+            'name'          => $request->input('name'),
+            'description'   => $request->input('description'),
+            'content'       => $request->input('content'),
+            'location'      => $request->input('location'),
+            'language'      => $request->input('language'),
+            'duration'      => $request->input('duration'),
+            'start'         => $request->input('start'),
         ]);
 
         if ($request->has('image')) {
-            $response->images()->create(['image' => $image->store('public')]);
+            if ($image !== null && isset($image)) {
+                $imageName = $image->getClientOriginalName();
+                $image->move(public_path('storage'), $imageName);
+
+                $response->images()->create(['image' => $imageName]);
+            }
         }
 
         return $this->sendResponse($response, __('messages.successfulOperation'));
@@ -64,9 +75,10 @@ class MissionController extends BaseController
      */
     public function show(int $id)
     {
-        $response = Mission::with('images')->where('id', $id)->get()->toArray();
+        $mission = Mission::find($id);
+        $response = MissionResource::make($mission);
 
-        return $this->respondWithArray($response);
+        return $this->respondWithArray(['data' => $response]);
     }
 
     /**
@@ -99,9 +111,9 @@ class MissionController extends BaseController
 
         $mission->fill($request->all());
         $mission->save();
-        $response[] = $mission;
+        $response = MissionResource::make($mission);
 
-        return $this->respondWithArray($response);
+        return $this->respondWithArray(['data'=>$response]);
     }
 
     /**

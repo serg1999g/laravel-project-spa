@@ -27,6 +27,10 @@ class MissionRequest extends FormRequest
             'name' => 'required|string|max:20',
             'description' => 'required|string|max:255',
             'content'=>'required|string|max:255',
+            'location'=>'required|string|max:255',
+            'language'=>'required|string|max:255',
+            'duration'=>'required|string|max:255',
+            'start'=>'required|string|max:255',
         ];
     }
 }
