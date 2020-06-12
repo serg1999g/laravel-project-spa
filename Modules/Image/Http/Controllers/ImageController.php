@@ -4,7 +4,9 @@ namespace Modules\Image\Http\Controllers;
 
 use App\Http\Controllers\Api\BaseController;
 use Illuminate\Http\Request;
+use Modules\Image\Http\Resources\ImageResource;
 use Modules\Image\Services\Interfaces\ImageUserServiceInterface;
+use Modules\User\Models\User;
 
 class ImageController extends BaseController
 {
@@ -25,14 +27,35 @@ class ImageController extends BaseController
 
     /**
      * @param int $id
-     * @return \PHPUnit\Util\Json
+     * @return \Illuminate\Http\JsonResponse
      */
     public function delete(int $id)
     {
-        if (isset($id)){
+        if (isset($id)) {
             $this->imageUserService->delete($id);
         }
 
-        return $this->respondWithMessage(__('messages.successfulOperation'));
+        return $this->sendResponse(null, __('messages.successfulOperation'));
+    }
+
+    public function create(Request $request)
+    {
+        $user = $request->user();
+
+        $image = $request->file('image');
+        if ($user->images === null) {
+            if ($request->has('image')) {
+                if ($image !== null && isset($image)) {
+                    $imageName = rand() . $image->getClientOriginalName();
+                    $image->move(public_path('storage'), $imageName);
+
+                    $user->images()->create(['image' => $imageName]);
+                }
+            }
+
+        }
+        $response = ImageResource::make($user->images);
+
+        return $this->respondWithArray(['data' => $response]);
     }
 }

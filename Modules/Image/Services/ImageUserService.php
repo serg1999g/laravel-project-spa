@@ -19,7 +19,7 @@ class ImageUserService implements ImageUserServiceInterface
     public function create(User $user, $image)
     {
         if ($image !== null && isset($image)) {
-            $imageName = $image->getClientOriginalName();
+            $imageName = rand() . $image->getClientOriginalName();
             $image->move(public_path('storage'), $imageName);
 
             $user->images()->create(['image' => $imageName]);
@@ -36,7 +36,7 @@ class ImageUserService implements ImageUserServiceInterface
     {
         $image = Image::findOrFail($id);
         $image->delete();
-        Storage::delete($image->image);
+        Storage::disk('public')->delete($image->image);
     }
 
     /**

@@ -48,6 +48,7 @@ $router->group(['middleware' => ['auth:api']], function (Router $router) {
     });
 
     $router->delete('image/{id}/delete', [ImageController::class, 'delete']);
+    $router->post('image/create', [ImageController::class, 'create']);
 });
 
 
