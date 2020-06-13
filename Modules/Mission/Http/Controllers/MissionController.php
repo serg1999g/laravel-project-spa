@@ -28,7 +28,7 @@ class MissionController extends BaseController
             $missions = Mission::all();
             $response = MissionResource::collection($missions);
 
-            return $this->respondWithArray(['data'=>$response]);
+            return $this->respondWithArray(['data' => $response]);
         } else {
             return $this->sendError(__('messages.unsuccessfulOperation'));
         }
@@ -57,14 +57,15 @@ class MissionController extends BaseController
 
         if ($request->has('image')) {
             if ($image !== null && isset($image)) {
-                $imageName = $image->getClientOriginalName();
+                $imageName = rand() . $image->getClientOriginalName();
                 $image->move(public_path('storage'), $imageName);
 
                 $response->images()->create(['image' => $imageName]);
             }
         }
+        $result = MissionResource::make($response);
 
-        return $this->sendResponse($response, __('messages.successfulOperation'));
+        return $this->respondWithArray(['data' => $result]);
     }
 
     /**
@@ -113,7 +114,7 @@ class MissionController extends BaseController
         $mission->save();
         $response = MissionResource::make($mission);
 
-        return $this->respondWithArray(['data'=>$response]);
+        return $this->respondWithArray(['data' => $response]);
     }
 
     /**

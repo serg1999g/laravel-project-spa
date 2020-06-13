@@ -82,7 +82,9 @@ class UserController extends BaseController
         $user->fill($request->all());
         $user->save();
 
-        return $this->respondWithArray(['data' => $user]);
+        $response = UserResource::make($user);
+
+        return $this->respondWithArray(['data' => $response]);
     }
 
     /**

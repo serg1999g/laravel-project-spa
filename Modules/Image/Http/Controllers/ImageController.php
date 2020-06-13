@@ -4,9 +4,9 @@ namespace Modules\Image\Http\Controllers;
 
 use App\Http\Controllers\Api\BaseController;
 use Illuminate\Http\Request;
+use Modules\Image\Http\Requests\ImageRequest;
 use Modules\Image\Http\Resources\ImageResource;
 use Modules\Image\Services\Interfaces\ImageUserServiceInterface;
-use Modules\User\Models\User;
 
 class ImageController extends BaseController
 {
@@ -26,6 +26,8 @@ class ImageController extends BaseController
     }
 
     /**
+     * delete image
+     *
      * @param int $id
      * @return \Illuminate\Http\JsonResponse
      */
@@ -38,21 +40,24 @@ class ImageController extends BaseController
         return $this->sendResponse(null, __('messages.successfulOperation'));
     }
 
-    public function create(Request $request)
+    /**
+     * create user avatar
+     *
+     * @param ImageRequest $request
+     * @return mixed
+     */
+    public function create(ImageRequest $request)
     {
         $user = $request->user();
-
         $image = $request->file('image');
-        if ($user->images === null) {
-            if ($request->has('image')) {
-                if ($image !== null && isset($image)) {
-                    $imageName = rand() . $image->getClientOriginalName();
-                    $image->move(public_path('storage'), $imageName);
 
-                    $user->images()->create(['image' => $imageName]);
-                }
+        if ($request->has('image')) {
+            if ($image !== null && isset($image)) {
+                $imageName = rand() . $image->getClientOriginalName();
+                $image->move(public_path('storage'), $imageName);
+
+                $user->images()->create(['image' => $imageName]);
             }
-
         }
         $response = ImageResource::make($user->images);
 
