@@ -43,7 +43,6 @@ class MissionController extends BaseController
     public function create(MissionRequest $request)
     {
         $user = $request->user();
-        $image = $request->file('image');
 
         $response = $user->missions()->create([
             'name'          => $request->input('name'),
@@ -55,14 +54,18 @@ class MissionController extends BaseController
             'start'         => $request->input('start'),
         ]);
 
-        if ($request->has('image')) {
+        for ($i = 0; $i <= 5; $i++) {
+            $image = $request->file('image-' . $i);;
+            if (!isset($image)) {
+                break;
+            }
             if ($image !== null && isset($image)) {
                 $imageName = rand() . $image->getClientOriginalName();
                 $image->move(public_path('storage'), $imageName);
-
                 $response->images()->create(['image' => $imageName]);
             }
         }
+
         $result = MissionResource::make($response);
 
         return $this->respondWithArray(['data' => $result]);
@@ -91,8 +94,9 @@ class MissionController extends BaseController
      */
     public function edit(int $id)
     {
-        $response = Mission::findOrFail($id);
-        $this->authorize('edit', $response);
+        $mission = Mission::findOrFail($id);
+        $this->authorize('edit', $mission);
+        $response = MissionResource::make($mission);
 
         return $this->sendResponse($response, __('messages.successfulOperation'));
     }
@@ -112,6 +116,19 @@ class MissionController extends BaseController
 
         $mission->fill($request->all());
         $mission->save();
+
+        for ($i = 0; $i <= 5; $i++) {
+            $image = $request->file('image-' . $i);
+            if (!isset($image)) {
+                continue;
+            }
+            if ($image !== null && isset($image)) {
+                $imageName = rand() . $image->getClientOriginalName();
+                $image->move(public_path('storage'), $imageName);
+                $mission->images()->create(['image' => $imageName]);
+            }
+        }
+
         $response = MissionResource::make($mission);
 
         return $this->respondWithArray(['data' => $response]);

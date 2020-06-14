@@ -63,4 +63,22 @@ class ImageController extends BaseController
 
         return $this->respondWithArray(['data' => $response]);
     }
+
+    public function createImages(ImageRequest $request)
+    {
+        $user = $request->user();
+        $image = $request->file('image');
+
+        if ($request->has('image')) {
+            if ($image !== null && isset($image)) {
+                $imageName = rand() . $image->getClientOriginalName();
+                $image->move(public_path('storage'), $imageName);
+
+                $user->missions()->images()->create(['image' => $imageName]);
+            }
+        }
+        $response = ImageResource::make($user->images);
+
+        return $this->respondWithArray(['data' => $response]);
+    }
 }

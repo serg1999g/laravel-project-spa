@@ -41,7 +41,7 @@ $router->group(['middleware' => ['auth:api']], function (Router $router) {
     $router->group(['prefix' => 'mission'], function (Router $router) {
         $router->post('create', [MissionController::class, 'create']);
         $router->get('/', [MissionController::class, 'index']);
-        $router->put('{id}/update', [MissionController::class, 'update']);
+        $router->post('{id}/update', [MissionController::class, 'update']);
         $router->delete('{id}/destroy', [MissionController::class, 'destroy']);
         $router->get('{id}/edit', [MissionController::class, 'edit']);
         $router->get('{id}/show', [MissionController::class, 'show']);
